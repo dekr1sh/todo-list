@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Todo List</title>
+</head>
+<body>
+    <header>
+        <button id="sidebarToggle" aria-label="Toggle Sidebar">
+            <span class="material-icons" aria-hidden="true">menu</span>
+        </button>
+        <div id="pageHeader">
+            <span class="material-icons" aria-hidden="true">task_alt</span>
+            <div>Todo List</div>
+        </div>
+        <button id="addTaskDialog" aria-label="Add New task">
+            <span class="material-icons" aria-hidden="true">add</span>
+        </button>
+    </header>
+
+    <div id="container">
+        <nav id="sidebar">
+            <div id="homeSection">
+                <div class="section-title">Home</div>
+                <div id="allTasks" aria-label="All Tasks" class="selected">
+                    <span class="material-icons" aria-hidden="true">task</span>
+                    All Tasks
+                </div>
+                <div id="today" aria-label="Today">
+                    <span class="material-icons" aria-hidden="true">today</span>
+                    Today
+                </div>
+                <div id="thisWeek" aria-label="This Week">
+                    <span class="material-icons" aria-hidden="true">calendar_view_week</span>
+                    This Week
+                </div>
+                <div id="important" aria-label="Important">
+                    <span class="material-icons" aria-hidden="true">star</span>
+                    Important
+                </div>
+            </div>
+            <div id="projectSection">
+                <div class="section-title">Projects</div>
+                <div id="projectOption" class="option hidden">
+                    <button id="projectRename">Rename</button>
+                    <button id="projectDelete">Delete</button>
+                </div>
+                <form id="renameForm" class="hidden">
+                    <div class="project-icon" aria-label="project">
+                        <span class="material-icons" aria-hidden="true">menu</span>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="projectRenameInput" placeholder="Enter Project Name" maxlength="24" required>
+                        <div class="form-buttons">
+                            <button type="submit" class="projectSubmitBtn">Add</button>
+                            <button type="button" class="projectCancelBtn">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+                <form id="projectForm" class="hidden">
+                    <div class="project-icon" aria-label="project">
+                        <span class="material-icons" aria-hidden="true">menu</span>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="projectInput" placeholder="Enter Project Name" maxlength="24" required>
+                        <div class="form-buttons">
+                            <button type="submit" class="projectSubmitBtn">Add</button>
+                            <button type="button" class="projectCancelBtn">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+                <button id="addProject" aria-label="Add New Project">
+                    <span class="material-icons" aria-hidden="true">add</span>
+                    Add Project
+                </button>
+            </div>
+        </nav>
+        <div id="content">
+            <div class="title">All Tasks</div>
+            <div class="todo-list">
+                <ul></ul>
+                <div id="taskOption" class="option hidden">
+                    <button id="taskEdit">Edit</button>
+                    <button id="taskDelete">Delete</button>
+                </div>
+                <form id="editTaskForm" class="hidden">
+                    <label for="editTaskTitle">Title:</label>
+                    <input type="text" id="editTaskTitle" required>
+                    <label for="editTaskDetails">Details(optional):</label>
+                    <textarea id="editTaskDetails"></textarea>
+                    <label for="editTaskDate">Due Date:</label>
+                    <input type="date" id="editTaskDate" >
+                    <div class="form-buttons">
+                        <button type="submit" class="taskSubmitBtn">Add</button>
+                        <button type="button" class="taskCancelBtn">Cancel</button>
+                    </div>
+                </form>
+                <form id="taskForm" class="hidden">
+                    <label for="taskTitle">Title:</label>
+                    <input type="text" id="taskTitle" required>
+                    <label for="taskDetails">Details(optional):</label>
+                    <textarea id="taskDetails"></textarea>
+                    <label for="taskDate">Due Date:</label>
+                    <input type="date" id="taskDate" >
+                    <div class="form-buttons">
+                        <button type="submit" class="taskSubmitBtn">Add</button>
+                        <button type="button" class="taskCancelBtn">Cancel</button>
+                    </div>
+                </form>
+                <button id="addTask" aria-label="Add New Task">
+                    <span class="material-icons" aria-hidden="true">add</span>
+                    Add Task
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <dialog id="taskDialog">
+        <div>New Task</div>
+        <form method="dialog" id="dialogForm">
+            <label for="title">Title:</label>
+            <input type="text" id="title" required>
+            <label for="details">Details(optional):</label>
+            <textarea id="details"></textarea>
+            <label for="date">Due Date:</label>
+            <input type="date" id="date">
+            <label for="project">Project:</label>
+            <select id="project"></select>
+            <div class="form-buttons">
+                <button type="submit" class="taskSubmitBtn">Add</button>
+                <button type="button" id="closeDialog" class="taskCancelBtn">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+</body>
+</html>
