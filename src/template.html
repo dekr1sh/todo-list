@@ -24,63 +24,79 @@
         <nav id="sidebar">
             <div id="homeSection">
                 <div class="section-title">Home</div>
-                <div id="allTasks" aria-label="All Tasks" class="selected">
+                <div id="allTasks" class="tile selected">
                     <span class="material-icons" aria-hidden="true">task</span>
-                    All Tasks
+                    <div class="home-name">All Tasks</div>
                 </div>
-                <div id="today" aria-label="Today">
+                <div id="today" class="tile">
                     <span class="material-icons" aria-hidden="true">today</span>
-                    Today
+                    <div class="home-name">Today</div>
                 </div>
-                <div id="thisWeek" aria-label="This Week">
+                <div id="thisWeek" class="tile">
                     <span class="material-icons" aria-hidden="true">calendar_view_week</span>
-                    This Week
+                    <div class="home-name">This Week</div>
                 </div>
-                <div id="important" aria-label="Important">
+                <div id="important" class="tile">
                     <span class="material-icons" aria-hidden="true">star</span>
-                    Important
+                    <div class="home-name">Important</div>
                 </div>
             </div>
             <div id="projectSection">
                 <div class="section-title">Projects</div>
-                <div id="projectOption" class="option hidden">
-                    <button id="projectRename">Rename</button>
-                    <button id="projectDelete">Delete</button>
-                </div>
-                <form id="renameForm" class="hidden">
-                    <div class="project-icon" aria-label="project">
-                        <span class="material-icons" aria-hidden="true">menu</span>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="projectRenameInput" placeholder="Enter Project Name" maxlength="24" required>
-                        <div class="form-buttons">
-                            <button type="submit" class="projectSubmitBtn">Add</button>
-                            <button type="button" class="projectCancelBtn">Cancel</button>
-                        </div>
-                    </div>
-                </form>
                 <form id="projectForm" class="hidden">
-                    <div class="project-icon" aria-label="project">
+                    <div class="project-icon" aria-label="Project Icon">
                         <span class="material-icons" aria-hidden="true">menu</span>
                     </div>
                     <div class="input-field">
                         <input type="text" id="projectInput" placeholder="Enter Project Name" maxlength="24" required>
                         <div class="form-buttons">
-                            <button type="submit" class="projectSubmitBtn">Add</button>
-                            <button type="button" class="projectCancelBtn">Cancel</button>
+                            <button type="submit" class="project-submit-btn">Add</button>
+                            <button type="button" class="project-cancel-btn">Cancel</button>
                         </div>
                     </div>
                 </form>
-                <button id="addProject" aria-label="Add New Project">
+                <button id="addProject">
                     <span class="material-icons" aria-hidden="true">add</span>
                     Add Project
                 </button>
+                <div id="projectOption" class="option hidden">
+                    <button id="projectRename">Rename</button>
+                    <button id="projectDelete">Delete</button>
+                </div>
+                <form id="renameProjectForm" class="hidden">
+                    <div class="project-icon" aria-label="Project Icon">
+                        <span class="material-icons" aria-hidden="true">menu</span>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="renameProjectInput" placeholder="Enter Project Name" maxlength="24" required>
+                        <div class="form-buttons">
+                            <button type="submit" class="project-submit-btn">Add</button>
+                            <button type="button" class="project-cancel-btn">Cancel</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </nav>
         <div id="content">
-            <div class="title">All Tasks</div>
-            <div class="todo-list">
+            <div id="contentTitle">All Tasks</div>
+            <div id="todoList">
                 <ul></ul>
+                <form id="taskForm" class="hidden">
+                    <label for="taskTitle">Title:</label>
+                    <input type="text" id="taskTitle" required>
+                    <label for="taskDetails">Details(optional):</label>
+                    <textarea id="taskDetails"></textarea>
+                    <label for="taskDate">Due Date:</label>
+                    <input type="date" id="taskDate" >
+                    <div class="form-buttons">
+                        <button type="submit" class="task-submit-btn">Add</button>
+                        <button type="button" class="task-cancel-btn">Cancel</button>
+                    </div>
+                </form>
+                <button id="addTask">
+                    <span class="material-icons" aria-hidden="true">add</span>
+                    Add Task
+                </button>
                 <div id="taskOption" class="option hidden">
                     <button id="taskEdit">Edit</button>
                     <button id="taskDelete">Delete</button>
@@ -93,26 +109,10 @@
                     <label for="editTaskDate">Due Date:</label>
                     <input type="date" id="editTaskDate" >
                     <div class="form-buttons">
-                        <button type="submit" class="taskSubmitBtn">Add</button>
-                        <button type="button" class="taskCancelBtn">Cancel</button>
+                        <button type="submit" class="task-submit-btn">Add</button>
+                        <button type="button" class="task-cancel-btn">Cancel</button>
                     </div>
                 </form>
-                <form id="taskForm" class="hidden">
-                    <label for="taskTitle">Title:</label>
-                    <input type="text" id="taskTitle" required>
-                    <label for="taskDetails">Details(optional):</label>
-                    <textarea id="taskDetails"></textarea>
-                    <label for="taskDate">Due Date:</label>
-                    <input type="date" id="taskDate" >
-                    <div class="form-buttons">
-                        <button type="submit" class="taskSubmitBtn">Add</button>
-                        <button type="button" class="taskCancelBtn">Cancel</button>
-                    </div>
-                </form>
-                <button id="addTask" aria-label="Add New Task">
-                    <span class="material-icons" aria-hidden="true">add</span>
-                    Add Task
-                </button>
             </div>
         </div>
     </div>
@@ -129,8 +129,8 @@
             <label for="project">Project:</label>
             <select id="project"></select>
             <div class="form-buttons">
-                <button type="submit" class="taskSubmitBtn">Add</button>
-                <button type="button" id="closeDialog" class="taskCancelBtn">Cancel</button>
+                <button type="submit" class="task-submit-btn">Add</button>
+                <button type="button" id="closeDialog" class="task-cancel-btn">Cancel</button>
             </div>
         </form>
     </dialog>
