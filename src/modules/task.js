@@ -1,24 +1,16 @@
-const createTask = (title, details, date, important = false, completed = false) => {
-    return { title, details, date, important, completed };
-};
+let dataId = 0;
 
-const toggleImportant = (task) => {
-    task.important = !task.important;
-};
+function getDataId() {
+    return dataId;
+}
 
-const toggleComplete = (task) => {
-    task.completed = !task.completed;
-};
+function increaseDataId() {
+    dataId++;
+}
 
-const editTask = (task, updates) => {
-    Object.assign(task, updates);
-};
+function createTask(dataProject, dataId, title, details, date, important = false, completed = false) {
+    return { dataProject, dataId, title, details, date, important, completed };
+}
 
-const deleteTask = (project, task) => {
-    const index = project.tasks.indexOf(task);
-    if (index !== -1) {
-        project.tasks.splice(index, 1);
-    }
-};
 
-export {createTask, toggleImportant, toggleComplete, editTask, deleteTask};
+export {getDataId, increaseDataId, createTask};

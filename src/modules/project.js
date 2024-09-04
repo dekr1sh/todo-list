@@ -1,28 +1,21 @@
-const projects = []; 
+const projects = [];
 
-const getProjects = () => {
+function getProjects() {
     return projects;
+}
+
+function createProject(dataProject, name) {
+    return { dataProject, name, tasks: [] };
 };
 
-const createProject = (name) => {
-    const project = { name, tasks: [] };
-    projects.push(project);
-    return project;
-};
+function getCurrentDataProject() {
+    const projects = getProjects();
+    return projects.length - 1;
+}
 
-const renameProject = (project, newName) => {
-    project.name = newName;
-};
+function getNextDataProject() {
+    const projects = getProjects();
+    return projects.length;
+}
 
-const deleteProject = (projectToDelete) => {
-    const index = projects.indexOf(projectToDelete);
-    if (index !== -1) {
-        projects.splice(index, 1);
-    }
-};
-
-const addTaskToProject = (project, task) => {
-    project.tasks.push(task);
-};
-
-export { createProject, renameProject, deleteProject, addTaskToProject, getProjects };
+export { getProjects, createProject, getCurrentDataProject, getNextDataProject };
