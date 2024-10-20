@@ -112,7 +112,8 @@ function getCurrentDataProject(){
 function processTaskInput(e) {
     const taskTitle = document.getElementById("taskTitle").value;
     const taskDetails = document.getElementById("taskDetails").value;
-    // When you retrieve the value of a date input via JS, it will be returned as "YYYY-MM-DD" which is the ISO date format.
+    // The browser's default behavior for displaying the date in the <input type="date"> field can vary based on your system's local settings.
+    // However, when you retrieve the value of a date input, it will always be returned in "YYYY-MM-DD" which is the ISO date format.
     let taskDate = document.getElementById("taskDate").value; 
     taskDate = processDateData(taskDate);
 
