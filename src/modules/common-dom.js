@@ -1,4 +1,14 @@
 import { checkHomeSectionTile, displayTasksInProject, showAddTaskBtn, hideAddTaskBtn, revertEditTaskForm } from "./task-dom.js";
+import { getProjects } from "./project.js";
+import { getDataId } from "./task.js";
+
+function saveToLocalStorage() {
+    const projects = getProjects();
+    const dataId = getDataId();
+    
+    localStorage.setItem("currentProjects", JSON.stringify(projects));
+    localStorage.setItem("currentDataId", dataId.toString());
+}
 
 function createSpanIcon(name) {
     const icon = document.createElement("span");
@@ -109,6 +119,6 @@ function checkTile(e) {
 }
 
 export {
-    createSpanIcon, refreshDisplay, revertOption, 
+    createSpanIcon, refreshDisplay, revertOption, saveToLocalStorage,
     showDropDown, hideDropDown, checkTile, updateContentTitle
 };

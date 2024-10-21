@@ -1,4 +1,5 @@
-let dataId = 0;
+const defaultDataId = 0;
+let dataId = +localStorage.getItem("currentDataId") || defaultDataId;
 
 function getDataId() {
     return dataId;

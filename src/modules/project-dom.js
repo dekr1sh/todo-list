@@ -1,5 +1,5 @@
 import { getProjects, createProject, getNextDataProject } from "./project.js";
-import { createSpanIcon, updateContentTitle, revertOption, checkTile, showDropDown, hideDropDown } from "./common-dom.js";
+import { createSpanIcon, updateContentTitle, revertOption, checkTile, showDropDown, hideDropDown, saveToLocalStorage } from "./common-dom.js";
 
 function showProjectForm() {
     const projectForm = document.getElementById("projectForm");
@@ -55,6 +55,8 @@ function processProjectInput(e) {
 
     const projects = getProjects();
     projects.push(newProject);
+    saveToLocalStorage();
+
     addProjectToDOM(dataProject, projectName);
 
     hideProjectForm();
@@ -72,6 +74,7 @@ function sortProjects() {
         i++;
     });
     projects.sort((a, b) => a.dataProject - b.dataProject);
+    saveToLocalStorage();
 }
 
 function deleteProject(e) {
@@ -88,8 +91,9 @@ function deleteProject(e) {
 
     revertOption();
     tile.remove();
-    projects.splice(index, 1);
     sortProjects();
+    projects.splice(index, 1);
+    saveToLocalStorage();
 }
 
 function relocateRenameProjectForm(tile) {
@@ -136,6 +140,7 @@ function processRenameProjectInput() {
 
     const projects = getProjects();
     projects[dataProject].name = renameProjectInput;
+    saveToLocalStorage();
 
     showHiddenProject();
     updateContentTitle(projectName);

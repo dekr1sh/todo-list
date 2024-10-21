@@ -1,6 +1,6 @@
 import { getProjects } from "./project.js";
 import { getDataId, increaseDataId, createTask } from "./task.js";
-import { createSpanIcon, refreshDisplay, revertOption, hideDropDown } from "./common-dom.js"
+import { createSpanIcon, refreshDisplay, revertOption, hideDropDown, saveToLocalStorage } from "./common-dom.js"
 import { format, addDays, subDays, isWithinInterval } from "date-fns";
 import parseISO from "date-fns/parseISO";
 
@@ -124,6 +124,7 @@ function processTaskInput(e) {
     const projects = getProjects();
     projects[dataProject].tasks.push(newTask);
     increaseDataId();
+    saveToLocalStorage();
 
     addTaskToDOM(dataId, taskTitle, taskDetails, taskDate);
     hideTaskForm();
@@ -271,6 +272,7 @@ function updateCompletedTask(e) {
     const dataId = +e.target.closest("li").getAttribute("data-id");
     const selectedTask = findSelectedTask(dataId);
     selectedTask.completed = !selectedTask.completed;
+    saveToLocalStorage();
 }
 
 function styleImportantTask(e) {
@@ -285,6 +287,7 @@ function updateImportantTask(e) {
     const dataId = +e.target.closest("li").getAttribute("data-id");
     const selectedTask = findSelectedTask(dataId);
     selectedTask.important = !selectedTask.important;
+    saveToLocalStorage();
 
     revertOption();
     refreshDisplay(selectedTask.dataProject);
@@ -298,6 +301,7 @@ function deleteTask(e) {
 
     const projects = getProjects();
     projects[dataProject].tasks = projects[dataProject].tasks.filter((task) => task !== selectedTask);
+    saveToLocalStorage();
 
     revertOption();
     taskNode.remove();
@@ -362,6 +366,7 @@ const processEditTaskInput = (e) => {
     selectedTask.title = editTaskTitle;
     selectedTask.details = editTaskDetails;
     selectedTask.date = processDateData(editTaskDate);
+    saveToLocalStorage();
     
     revertEditTaskForm();
     revertOption();
