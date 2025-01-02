@@ -1,32 +1,32 @@
-import { getProjects } from "./project.js";
-import { getDataId, increaseDataId, createTask } from "./task.js";
-import { createSpanIcon, refreshDisplay, revertOption, hideDropDown, saveToLocalStorage } from "./common-dom.js"
+import { getProjects } from "./project";
+import { getDataId, increaseDataId, createTask, Task } from "./task";
+import { createSpanIcon, refreshDisplay, revertOption, hideDropDown, saveToLocalStorage } from "./common-dom"
 import { format, addDays, subDays, isWithinInterval } from "date-fns";
-import parseISO from "date-fns/parseISO";
+import { parseISO } from "date-fns/parseISO";
 
 function showAddTaskBtn() {
-    const addTaskBtn = document.getElementById("addTask");
+    const addTaskBtn = document.getElementById("addTask") as HTMLElement;
     addTaskBtn.classList.remove("hidden");
 }
 
 function hideAddTaskBtn() {
-    const addTaskBtn = document.getElementById("addTask");
+    const addTaskBtn = document.getElementById("addTask") as HTMLElement;
     addTaskBtn.classList.add("hidden");
 }
 
 function showTaskForm() {
-    const taskForm = document.querySelector("#taskForm");
-    const taskTitle = document.querySelector('#taskTitle');
+    const taskForm = document.querySelector("#taskForm") as HTMLFormElement;
+    const taskTitle = document.querySelector('#taskTitle') as HTMLInputElement;
 
     taskForm.classList.remove("hidden");
     taskTitle.focus();
 }
 
 function hideTaskForm() {
-    const taskForm = document.querySelector("#taskForm");
-    const taskTitle = document.querySelector('#taskTitle');
-    const taskDetails = document.querySelector("#taskDetails");
-    const taskDate = document.querySelector("#taskDate");
+    const taskForm = document.querySelector("#taskForm") as HTMLFormElement;
+    const taskTitle = document.querySelector('#taskTitle') as HTMLInputElement;
+    const taskDetails = document.querySelector("#taskDetails") as HTMLTextAreaElement;
+    const taskDate = document.querySelector("#taskDate") as HTMLInputElement;
 
     taskTitle.value = "";
     taskDetails.value = "";
@@ -34,10 +34,10 @@ function hideTaskForm() {
     taskForm.classList.add("hidden");
 }
 
-function addTaskToDOM(dataId, title, details, date, important = false, completed = false) {
-    const ul = document.querySelector("ul");
-    const li = document.createElement("li");
-    li.setAttribute("data-id", dataId);
+function addTaskToDOM(dataId: number, title: string, details: string, date: string, important: boolean = false, completed: boolean = false) {
+    const ul = document.querySelector("ul") as HTMLElement;
+    const li = document.createElement("li") as HTMLElement;
+    li.setAttribute("data-id", dataId.toString());
     ul.appendChild(li);
 
     const checker = document.createElement("div");
@@ -97,7 +97,7 @@ function addTaskToDOM(dataId, title, details, date, important = false, completed
     editContainer.appendChild(editIcon);
 }
 
-function processDateData(date) {
+function processDateData(date: string) {
     if (date) {
         return date;
     }
@@ -105,16 +105,16 @@ function processDateData(date) {
 }
 
 function getCurrentDataProject(){
-    const tile = document.querySelector(".selected");
-    return tile.getAttribute("data-project");
+    const tile = document.querySelector(".selected") as HTMLElement;
+    return +tile.getAttribute("data-project")!;
 }
 
-function processTaskInput(e) {
-    const taskTitle = document.getElementById("taskTitle").value;
-    const taskDetails = document.getElementById("taskDetails").value;
+function processTaskInput(e: Event) {
+    const taskTitle = (document.getElementById("taskTitle") as HTMLInputElement).value;
+    const taskDetails = (document.getElementById("taskDetails") as HTMLTextAreaElement).value;
     // The browser's default behavior for displaying the date in the <input type="date"> field can vary based on your system's local settings.
     // However, when you retrieve the value of a date input, it will always be returned in "YYYY-MM-DD" which is the ISO date format.
-    let taskDate = document.getElementById("taskDate").value; 
+    let taskDate = (document.getElementById("taskDate") as HTMLInputElement).value; 
     taskDate = processDateData(taskDate);
 
     const dataProject = getCurrentDataProject();
@@ -132,13 +132,13 @@ function processTaskInput(e) {
 }
 
 function checkNoTasks(){
-    const ul = document.querySelector("ul");
+    const ul = document.querySelector("ul") as HTMLElement;
     return !ul.innerHTML;
 }
 
 function showNoTasks() {
     if(checkNoTasks()){
-        const ul = document.querySelector("ul");
+        const ul = document.querySelector("ul") as HTMLElement;
         const div = document.createElement("div");
         div.classList.add("no-tasks");
         div.textContent = "No Pending Tasks!";
@@ -147,7 +147,7 @@ function showNoTasks() {
 }
 
 function displayAllTasks() {
-    const ul = document.querySelector("ul");
+    const ul = document.querySelector("ul") as HTMLElement;
     ul.innerHTML = "";
 
     const projects = getProjects();
@@ -161,7 +161,7 @@ function displayAllTasks() {
 }
 
 function displayToday() {
-    const ul = document.querySelector("ul");
+    const ul = document.querySelector("ul") as HTMLElement;
     ul.innerHTML = "";
 
     // new Date() returns a date object which contains current date and time.
@@ -182,7 +182,7 @@ function displayToday() {
     showNoTasks();
 }
 
-function checkThisWeek(date) {
+function checkThisWeek(date: Date) {
     const thisWeekMinusOne = subDays(new Date(), 1); // subtracts 1 day from new Date() and returns a new date object
     const thisWeekPlusOne = addDays(new Date(), 8);  // adds 8 days to new Date() and returns a new date object
     // isWithinInterval(date, {start: thisWeekMinusOne, end: thisWeekPlusOne}) checks if the provided 'date' object falls between thisWeekMinusOne and thisWeekPlusOne
@@ -193,7 +193,7 @@ function checkThisWeek(date) {
 }
 
 function displayThisWeek() {
-    const ul = document.querySelector("ul");
+    const ul = document.querySelector("ul") as HTMLElement;
     ul.innerHTML = "";
 
     const projects = getProjects();
@@ -209,7 +209,7 @@ function displayThisWeek() {
 }
 
 function displayImportant() {
-    const ul = document.querySelector("ul");
+    const ul = document.querySelector("ul") as HTMLElement;
     ul.innerHTML = "";
 
     const projects = getProjects();
@@ -223,7 +223,7 @@ function displayImportant() {
     showNoTasks();
 }
 
-function checkHomeSectionTile(homeSectionTile) {
+function checkHomeSectionTile(homeSectionTile: HTMLElement) {
     if (homeSectionTile.matches("#allTasks")) {
         displayAllTasks();
     } else if (homeSectionTile.matches("#today")) {
@@ -235,8 +235,8 @@ function checkHomeSectionTile(homeSectionTile) {
     }
 }
 
-function displayTasksInProject(dataProject) {
-    const ul = document.querySelector("ul");
+function displayTasksInProject(dataProject: number) {
+    const ul = document.querySelector("ul") as HTMLElement;
     ul.innerHTML = "";
 
     const projects = getProjects();
@@ -245,7 +245,7 @@ function displayTasksInProject(dataProject) {
     });
 }
 
-function findSelectedTask(dataId) {
+function findSelectedTask(dataId: number) {
     const projects = getProjects();
 
     for (let project of projects) {
@@ -255,80 +255,85 @@ function findSelectedTask(dataId) {
         }
     }
 
-    return {};
+    return null;
 }
 
-function styleCompletedTask(e) {
-    const checker = e.target;
-    const taskNode = e.target.closest("li");
-    const taskText = taskNode.querySelector(".task-text");
+function styleCompletedTask(e: Event) {
+    const checker = e.target as HTMLElement;
+    const taskNode = (e.target as HTMLElement).closest("li") as HTMLElement;
+    const taskText = taskNode.querySelector(".task-text") as HTMLElement;
 
     checker.classList.toggle("checked");
     taskText.classList.toggle("line-through");
     taskText.classList.toggle("fade");
 }
 
-function updateCompletedTask(e) {
-    const dataId = +e.target.closest("li").getAttribute("data-id");
+function updateCompletedTask(e: Event) {
+    const dataId = +((e.target as HTMLElement).closest("li") as HTMLElement).getAttribute("data-id")!;
     const selectedTask = findSelectedTask(dataId);
-    selectedTask.completed = !selectedTask.completed;
-    saveToLocalStorage();
+    if(selectedTask){
+        selectedTask.completed = !selectedTask.completed;
+        saveToLocalStorage();
+    }
 }
 
-function styleImportantTask(e) {
-    const starOutline = e.target;
+function styleImportantTask(e: Event) {
+    const starOutline = e.target as HTMLElement;
     starOutline.classList.toggle("star-hidden");
 
-    const starFilled = e.target.nextElementSibling;
+    const starFilled = (e.target as HTMLElement).nextElementSibling as HTMLElement;
     starFilled.classList.toggle("star-hidden");
 }
 
-function updateImportantTask(e) {
-    const dataId = +e.target.closest("li").getAttribute("data-id");
+function updateImportantTask(e: Event) {
+    const dataId = +((e.target as HTMLElement).closest("li") as HTMLElement).getAttribute("data-id")!;
     const selectedTask = findSelectedTask(dataId);
-    selectedTask.important = !selectedTask.important;
-    saveToLocalStorage();
 
-    revertOption();
-    refreshDisplay(selectedTask.dataProject);
+    if(selectedTask){
+        selectedTask.important = !selectedTask.important;
+        saveToLocalStorage();
+        revertOption();
+        refreshDisplay(selectedTask.dataProject);
+    }
 }
 
-function deleteTask(e) {
-    const taskNode = e.target.closest("li");
-    const dataId = +taskNode.getAttribute("data-id");
+function deleteTask(e: Event) {
+    const taskNode = (e.target as HTMLElement).closest("li") as HTMLElement;
+    const dataId = +taskNode.getAttribute("data-id")!;
     const selectedTask = findSelectedTask(dataId);
-    const dataProject = selectedTask.dataProject;
 
-    const projects = getProjects();
-    projects[dataProject].tasks = projects[dataProject].tasks.filter((task) => task !== selectedTask);
-    saveToLocalStorage();
-
-    revertOption();
-    taskNode.remove();
+    if(selectedTask){
+        const dataProject = selectedTask.dataProject;
+        const projects = getProjects();
+        projects[dataProject].tasks = projects[dataProject].tasks.filter((task) => task !== selectedTask);
+        saveToLocalStorage();
+        revertOption();
+        taskNode.remove();
+    }
 }
 
 function findHiddenTask() {
-    const hiddenTask = document.querySelector("li.hidden");
+    const hiddenTask = document.querySelector("li.hidden") as HTMLElement;
     return hiddenTask;
 }
 
 function showHiddenTask() {
-    const hiddenTask = document.querySelector("li.hidden");
+    const hiddenTask = document.querySelector("li.hidden") as HTMLElement;
     hiddenTask.classList.remove("hidden");
 }
 
-const relocateEditTaskForm = (e) => {
-    const taskNode = e.target.closest("li");
-    const ul = taskNode.parentNode;
+const relocateEditTaskForm = (e: Event) => {
+    const taskNode = (e.target as HTMLElement).closest("li") as HTMLElement;
+    const ul = taskNode.parentNode as HTMLElement;
 
-    const editTaskForm = document.getElementById("editTaskForm");
-    const title = taskNode.querySelector(".title").textContent;
-    const details = taskNode.querySelector(".details").textContent;
-    const date = taskNode.querySelector(".date").textContent;
+    const editTaskForm = document.getElementById("editTaskForm") as HTMLFormElement;
+    const title = (taskNode.querySelector(".title") as HTMLElement).textContent!;
+    const details = (taskNode.querySelector(".details") as HTMLElement).textContent!;
+    const date = (taskNode.querySelector(".date") as HTMLElement).textContent!;
     
-    const editTaskTitle = editTaskForm.querySelector("#editTaskTitle");
-    const editTaskDetails = editTaskForm.querySelector("#editTaskDetails");
-    const editTaskDate = editTaskForm.querySelector("#editTaskDate");
+    const editTaskTitle = editTaskForm.querySelector("#editTaskTitle") as HTMLInputElement;
+    const editTaskDetails = editTaskForm.querySelector("#editTaskDetails") as HTMLTextAreaElement;
+    const editTaskDate = editTaskForm.querySelector("#editTaskDate") as HTMLInputElement;
 
     editTaskTitle.value = title;
     editTaskDetails.value = details;
@@ -340,52 +345,52 @@ const relocateEditTaskForm = (e) => {
 }
 
 const revertEditTaskForm = () => {
-    const todoList = document.querySelector("#todoList");
-    const editTaskForm = document.querySelector("#editTaskForm");
+    const todoList = document.querySelector("#todoList") as HTMLElement;
+    const editTaskForm = document.querySelector("#editTaskForm") as HTMLFormElement;
 
     editTaskForm.classList.add("hidden");
     // automatically removes editTaskForm from its current position and re-adds it at the end which is its original position
     todoList.appendChild(editTaskForm);
 }
 
-const showEditTaskForm = (e) => {
-    let editContainer = e.target.parentNode.parentNode;
+const showEditTaskForm = (e: Event) => {
+    let editContainer = ((e.target as HTMLElement).parentNode as HTMLElement).parentNode as HTMLElement;
     hideDropDown(editContainer);
     relocateEditTaskForm(e);
 
-    document.getElementById("editTaskTitle").focus();
+    (document.getElementById("editTaskTitle") as HTMLInputElement).focus();
 }
 
-const processEditTaskInput = (e) => {
-    const editTaskTitle = document.querySelector("#editTaskTitle").value;
-    const editTaskDetails = document.querySelector("#editTaskDetails").value;
-    const editTaskDate = document.querySelector("#editTaskDate").value;
-    const dataId = +findHiddenTask().getAttribute("data-id");
+const processEditTaskInput = (e: Event) => {
+    const editTaskTitle = (document.querySelector("#editTaskTitle") as HTMLInputElement).value;
+    const editTaskDetails = (document.querySelector("#editTaskDetails") as HTMLTextAreaElement).value;
+    const editTaskDate = (document.querySelector("#editTaskDate") as HTMLInputElement).value;
+    const dataId = +findHiddenTask().getAttribute("data-id")!;
     const selectedTask = findSelectedTask(dataId);
 
-    selectedTask.title = editTaskTitle;
-    selectedTask.details = editTaskDetails;
-    selectedTask.date = processDateData(editTaskDate);
-    saveToLocalStorage();
-    
-    revertEditTaskForm();
-    revertOption();
-    showHiddenTask();
-
-    const dataProject = selectedTask.dataProject;
-    refreshDisplay(dataProject);
-    e.preventDefault();
+    if(selectedTask){
+        selectedTask.title = editTaskTitle;
+        selectedTask.details = editTaskDetails;
+        selectedTask.date = processDateData(editTaskDate);
+        saveToLocalStorage();
+        revertEditTaskForm();
+        revertOption();
+        showHiddenTask();
+        const dataProject = selectedTask.dataProject;
+        refreshDisplay(dataProject);
+        e.preventDefault();
+    }
 }
 
-const editTask = (e) => {
-    const isStarIcon = e.target.matches(".not-important");
-    const isCircleIcon = e.target.matches(".checker");
+const editTask = (e: Event) => {
+    const isStarIcon = (e.target as HTMLElement).matches(".not-important");
+    const isCircleIcon = (e.target as HTMLElement).matches(".checker");
 
-    const isEditTaskSubmitBtn = e.target.matches("#editTaskForm .task-submit-btn");
-    const isEditTaskCancelBtn = e.target.matches("#editTaskForm .task-cancel-btn");
+    const isEditTaskSubmitBtn = (e.target as HTMLElement).matches("#editTaskForm .task-submit-btn");
+    const isEditTaskCancelBtn = (e.target as HTMLElement).matches("#editTaskForm .task-cancel-btn");
 
-    const isTaskEditBtn = e.target.matches("#taskEdit");
-    const isTaskDeleteBtn = e.target.matches("#taskDelete");
+    const isTaskEditBtn = (e.target as HTMLElement).matches("#taskEdit");
+    const isTaskDeleteBtn = (e.target as HTMLElement).matches("#taskDelete");
 
     if(isStarIcon){
         styleImportantTask(e);
@@ -411,16 +416,16 @@ const editTask = (e) => {
 }
 
 const taskEvents = () => {
-    const addTaskBtn = document.querySelector("#addTask");
+    const addTaskBtn = document.querySelector("#addTask") as HTMLElement;
     addTaskBtn.addEventListener("click", showTaskForm);
 
-    const cancelTaskBtn = document.querySelector("#taskForm .task-cancel-btn");
+    const cancelTaskBtn = document.querySelector("#taskForm .task-cancel-btn") as HTMLElement;
     cancelTaskBtn.addEventListener("click", hideTaskForm);
 
-    const taskForm = document.querySelector("#taskForm");
+    const taskForm = document.querySelector("#taskForm") as HTMLFormElement;
     taskForm.addEventListener("submit", processTaskInput);
 
-    const todoList = document.querySelector("#todoList");
+    const todoList = document.querySelector("#todoList") as HTMLElement;
     todoList.addEventListener("click", editTask);
 }
 

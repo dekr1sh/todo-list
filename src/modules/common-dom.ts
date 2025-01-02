@@ -1,6 +1,6 @@
-import { checkHomeSectionTile, displayTasksInProject, showAddTaskBtn, hideAddTaskBtn, revertEditTaskForm } from "./task-dom.js";
-import { getProjects } from "./project.js";
-import { getDataId } from "./task.js";
+import { checkHomeSectionTile, displayTasksInProject, showAddTaskBtn, hideAddTaskBtn, revertEditTaskForm } from "./task-dom";
+import { getProjects } from "./project";
+import { getDataId } from "./task";
 
 function saveToLocalStorage() {
     const projects = getProjects();
@@ -10,7 +10,7 @@ function saveToLocalStorage() {
     localStorage.setItem("currentDataId", dataId.toString());
 }
 
-function createSpanIcon(name) {
+function createSpanIcon(name: string) {
     const icon = document.createElement("span");
     icon.classList.add("material-icons");
     icon.setAttribute("aria-hidden", "true");
@@ -18,8 +18,8 @@ function createSpanIcon(name) {
     return icon;
 }
 
-function refreshDisplay(dataProject) {
-    const selectedTile = document.querySelector(".selected");
+function refreshDisplay(dataProject: number) {
+    const selectedTile = document.querySelector(".selected") as HTMLElement;
 
     if (selectedTile.closest("#homeSection")) {
         checkHomeSectionTile(selectedTile);
@@ -28,43 +28,43 @@ function refreshDisplay(dataProject) {
     }
 }
 
-function relocateOption(e) {
-    const editContainer = e.target.closest(".edit-container");
+function relocateOption(e: Event) {
+    const editContainer = (e.target as HTMLElement).closest(".edit-container") as HTMLElement;
 
-    if (e.target.closest(".tile")) {              
-        const projectOption = document.getElementById("projectOption");
+    if ((e.target as HTMLElement).closest(".tile")) {              
+        const projectOption = document.getElementById("projectOption") as HTMLElement;
         projectOption.classList.remove("hidden");
         editContainer.appendChild(projectOption);
-    } else if (e.target.closest("li")) {            
-        const taskOption = document.getElementById("taskOption");
+    } else if ((e.target as HTMLElement).closest("li")) {            
+        const taskOption = document.getElementById("taskOption") as HTMLElement;
         taskOption.classList.remove("hidden");
         editContainer.appendChild(taskOption);        
     }
 }
 
 function revertOption() {
-    const projectOption = document.querySelector("#projectOption");
+    const projectOption = document.querySelector("#projectOption") as HTMLElement;
     projectOption.classList.add("hidden");
-    const projectSection = document.querySelector("#projectSection");
+    const projectSection = document.querySelector("#projectSection") as HTMLElement;
     // automatically removes projectOption from its current position and re-adds it at the end which is its original position
     projectSection.appendChild(projectOption); 
     
-    const taskOption = document.querySelector("#taskOption");
+    const taskOption = document.querySelector("#taskOption") as HTMLElement;
     taskOption.classList.add("hidden");
-    const todoList = document.querySelector("#todoList");
+    const todoList = document.querySelector("#todoList") as HTMLElement;
     // automatically removes taskOption from its current position and re-adds it at the end which is its original position
     todoList.appendChild(taskOption); 
 }
 
-function showDropDown(e) {
+function showDropDown(e: Event) {
     // Ensures that dropdown doesn't close when clicked inside of it
-    if (!e.target.matches("[data-dropdown-button]")) {
-        if (e.target.closest("[data-dropdown]")) {
+    if (!(e.target as HTMLElement).matches("[data-dropdown-button]")) {
+        if ((e.target as HTMLElement).closest("[data-dropdown]")) {
             return;
         }
     }
 
-    const currentDropDown = e.target.matches("[data-dropdown-button]") ? e.target.closest("[data-dropdown]") : null;
+    const currentDropDown = (e.target as HTMLElement).matches("[data-dropdown-button]") ? (e.target as HTMLElement).closest("[data-dropdown]") : null;
     if (currentDropDown) {
         relocateOption(e);
         setTimeout(() => currentDropDown.classList.add("active"), 0);
@@ -77,37 +77,37 @@ function showDropDown(e) {
     });
 }
 
-function hideDropDown(editContainer) {
+function hideDropDown(editContainer: HTMLElement) {
     editContainer.classList.remove("active");
 }
 
-function updateContentTitle(node) {
-    const contentTitle = document.querySelector("#contentTitle");
+function updateContentTitle(node: HTMLElement) {
+    const contentTitle = document.querySelector("#contentTitle") as HTMLElement;
     contentTitle.textContent = node.textContent;
 }
 
-function selectNewTile(newTile) {
-    const selectedTile = document.querySelector(".selected");   
+function selectNewTile(newTile: HTMLElement) {
+    const selectedTile = document.querySelector(".selected") as HTMLElement;   
     
     selectedTile.classList.remove("selected");                  
     newTile.classList.add("selected");                             
 }
 
-function checkTile(e) {
-    const homeSectionTile = e.target.closest("#homeSection .tile");
-    const projectSectionTile = e.target.closest("#projectSection .tile");
+function checkTile(e: Event) {
+    const homeSectionTile = (e.target as HTMLElement).closest("#homeSection .tile") as HTMLElement | null;
+    const projectSectionTile = (e.target as HTMLElement).closest("#projectSection .tile") as HTMLElement | null;
     
     if (homeSectionTile) {
-        const homeName = homeSectionTile.querySelector(".home-name");
+        const homeName = homeSectionTile.querySelector(".home-name") as HTMLElement;
         
         selectNewTile(homeSectionTile);
         revertOption();
-        checkHomeSectionTile(homeSectionTile);
+        checkHomeSectionTile(homeSectionTile); 
         updateContentTitle(homeName);
         hideAddTaskBtn();
     } else if (projectSectionTile) {
-        const projectName = projectSectionTile.querySelector(".project-name");
-        const dataProject = projectSectionTile.getAttribute("data-project");
+        const projectName = projectSectionTile.querySelector(".project-name") as HTMLElement;
+        const dataProject = +projectSectionTile.getAttribute("data-project")!;
         
         revertEditTaskForm();              
         revertOption();
